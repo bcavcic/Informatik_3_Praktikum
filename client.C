@@ -24,12 +24,18 @@ int main() {
 
 	int i=0;
 	bool goOn=1;
+	
 	while(goOn){ // send and receive data
+	std::string befehl;
+	befehl.clear();
+	cin >> befehl;
+
+	
 		if((rand() % 20) < i++){
 			msg = string("BYEBYE");
 			goOn = 0;
 		}else{
-			msg = string("client wants this");
+			msg = befehl;
 		}
 		cout << "client sends:" << msg << endl;
 		c.sendData(msg);
