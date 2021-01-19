@@ -33,23 +33,19 @@ protected:
 
 string myTCPserver::myResponse(string input){
 	std::string ret = "";
-	ret.clear();
 	std::string p = "";
-	p.clear();
 	std::string p1 = "";
-	p1.clear();
 	std::string p2 = "";
-	p1.clear();
 	std::string befehl = input;
 	if(input.find("(") != std::string::npos){
 		befehl.clear();
 		befehl = input.substr(0, input.find("("));
 		p.clear();
-		p = input.substr(input.find("(")+1, input.find(")")-1);
+		p = input.substr(input.find("(")+1, input.find(")")-input.find("(")-1);
 		p1.clear();
 		p2.clear();
 		p1 = p.substr(0, p.find(","));
-		p2 = p.substr(p.find(",")+1, p.length());
+		p2 = p.substr(p.find(",")+1);
 	}
 
 	if(befehl == "LOG"){
@@ -63,21 +59,21 @@ string myTCPserver::myResponse(string input){
 				delete box_;
 			}
 			box_ = new BlackBoxUnsafe(std::stoi(p1), std::stoi(p2));
-			ret="Neues Passwort erstellt mit den Parametern: " + p1 + ", " + p2;
+			ret="Passwort erstellt(" + p1 + "," + p2 + ")";
 		}else{
 			ret="Parameter falsch!";
 		}
 
 	}else if(befehl == "GP" || input.find("GetPasswort")!=std::string::npos){
-		ret = "Das generierte Passwort lautet: " + box_->pwd_;
+		ret = "Generiertes Passwort: " + box_->pwd_;
 	}else{
-		ret = "Befehl " + befehl + " unbekannt";
+		ret = befehl + " unbekannt!";
 	}
 	return ret + "\n";
 }
 
 
-int main(){
+int ServerMain(){
 	srand(time(nullptr));
 	cout << "Port?"<<endl;
 	std::string port;
@@ -90,6 +86,6 @@ int main(){
 
 	}
 	cout << "Server mit Port " << portint << " wird gestartet!" << endl;
-	myTCPserver srv(2022,25);
+	myTCPserver srv(portint,25);
 	srv.run();
 }

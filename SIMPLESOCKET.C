@@ -50,7 +50,7 @@ bool TCPclient::conn(string address , int port){
 			perror("Could not create socket");
 		}
 
-		cout<<"Socket created\n";
+		//cout<<"Socket created\n";
 	}else { /* OK , nothing */ }
 
 	//setup address structure
@@ -182,8 +182,8 @@ string TCPserver::response(string incomingMsg){
 		msg = myResponse(incomingMsg);
 	}
 
-	cout << "received :" << incomingMsg << endl;
-	cout << "send back:" << msg << endl;
+	//cout << "received :" << incomingMsg << endl;
+	//cout << "send back:" << msg << endl;
 
 	return msg;
 }

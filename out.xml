@@ -1,0 +1,1 @@
+<UnitTest name="BlackBoxUnsafe" status="FAILED"><TestSuite name="input methode" status="FAILED"><TestCase name="check incorrect pwd">PASSED</TestCase><TestCase name="check correct pwd">FAILED</TestCase></TestSuite></UnitTest>

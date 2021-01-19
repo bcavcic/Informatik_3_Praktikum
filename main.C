@@ -15,6 +15,8 @@
 
 #include <unistd.h>
 
+#include <thread>
+
 #include "SHA256.H"
 #include "TASK1.H"
 #include "TASK2.H"
@@ -22,15 +24,90 @@
 #include "TASK4.H"
 #include "TASK5.H"
 #include "TASK6.H"
+#include "client.H"
+#include "server.H"
+#include <chrono>
 
 using namespace std;
+using namespace TASK1;
+using namespace std::chrono;
 
+int goOn_ = 0;
+bool done = false;
+
+void startServer(int port){
+	myTCPserver srv(port,25);
+	srv.run();
+}
+void startClient(myTCPclient c, int l, int v, string id){
+	cout << "Client " + id + ": " + c.passwortKnacken(l,v) << endl;
+	goOn_++;
+}
 
 int main(){
-	cout << "Hallo" << endl;
-	srand(time(nullptr));
-
-
+	int portbase = time(0)%2000+1000;
+	
+	std::string befehl;
+	int l;
+	int v;
+	int t;
+	cout << "Anzahl Threads?" << endl;
+	cin >> befehl;
+	t = std::stoi(befehl);
+	
+	vector<myTCPclient> clients;
+	
+	for(int i = 0; i< t; i++){
+		std::thread server(startServer,(portbase+i));
+		server.detach();
+	}
+	sleep(1);
+	for(int i = 0; i< t; i++){
+		myTCPclient c("localhost",(portbase+i));
+		clients.push_back(c);
+	}
+	
+	cout << endl;
+	cout << to_string(t) + " Clients und Server auf Port " + to_string(portbase) + " bis " + to_string(portbase+t) + " gestartet!" <<endl;	
+	
+	while(!done){
+	goOn_ = 0;
+	
+	cout << endl;
+	cout << "Passwortlänge?" << endl;
+	cin >> befehl;
+	l = std::stoi(befehl);
+	cout << "Zeichenvielfalt?" << endl;
+	cin >> befehl;
+	v = std::stoi(befehl);
+	
+	for(int i = 0; i< t; i++){
+	std::thread client(startClient, clients[i], l, v, to_string(i));
+	client.detach();
+	}
+	cout<< endl << "Threads gestartet!" << endl;
+	
+	while(goOn_<t){
+		usleep(1);
+	}
+	
+	int gesamtCount = 0;
+	for(int i = 0; i< t; i++){
+		gesamtCount = gesamtCount + clients[i].getCount();
+	}
+	cout << "Durchschnittlich " << gesamtCount/t << " Versuche!" << endl;
+	cout << "Fertig?(j/n)"<<endl;
+	string input;
+	cin >> input;
+	
+	if(input.find("j") != std::string::npos){
+		done = true;
+	}
+	}
+	
+	for(int i = 0; i<t; i++){
+		clients[i].sendMsg("BYEBYE", false);
+	}
     return 0;
 }
 
