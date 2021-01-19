@@ -44,16 +44,22 @@ void startClient(myTCPclient* c, int l, int v, string id){
 	goOn_++;
 }
 
-int main(){
+int main(int argc, char *argv[]){
 	int portbase = time(0)%2000+1000;
-	
-	std::string befehl;
 	int l;
 	int v;
 	int t;
+	if(argc == 4){
+		l = stoi(argv[1]);
+		v = stoi(argv[2]);
+		t = stoi(argv[3]);
+	}
+	std::string befehl;
+	if(argc != 4){
 	cout << "Anzahl Threads?" << endl;
 	cin >> befehl;
 	t = std::stoi(befehl);
+	}
 	
 	vector<myTCPclient> clients;
 	
@@ -73,6 +79,7 @@ int main(){
 	while(!done){
 	goOn_ = 0;
 	
+	if(argc != 4){
 	cout << endl;
 	cout << "Passwortlänge?" << endl;
 	cin >> befehl;
@@ -80,6 +87,7 @@ int main(){
 	cout << "Zeichenvielfalt?" << endl;
 	cin >> befehl;
 	v = std::stoi(befehl);
+	}
 	
 	for(int i = 0; i< t; i++){
 		std::thread client(startClient, &clients.at(i), l, v, to_string(i));
@@ -99,11 +107,14 @@ int main(){
 	}
 	cout << "Durchschnittlich " << gesamtCount/t << " Versuche!" << endl;
 	cout << "Durchschnittlich " << gesamtZeit/t << " ms!" << endl;
-	cout << "Fertig?(j/n)"<<endl;
-	string input;
-	cin >> input;
 	
-	if(input.find("j") != std::string::npos){
+	string input;
+	if(argc != 4){
+	cout << "Fertig?(j/n)"<<endl;
+	cin >> input;
+	}
+	
+	if(argc == 4 || input.find("j") != std::string::npos){
 		done = true;
 	}
 	}
