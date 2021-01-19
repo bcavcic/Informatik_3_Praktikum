@@ -50,9 +50,9 @@ int main(int argc, char *argv[]){
 	int v;
 	int t;
 	if(argc == 4){
-		l = stoi(argv[1]);
-		v = stoi(argv[2]);
-		t = stoi(argv[3]);
+		t = stoi(argv[1]);
+		l = stoi(argv[2]);
+		v = stoi(argv[3]);
 	}
 	std::string befehl;
 	if(argc != 4){
