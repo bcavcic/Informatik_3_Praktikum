@@ -39,8 +39,8 @@ void startServer(int port){
 	myTCPserver srv(port,25);
 	srv.run();
 }
-void startClient(myTCPclient c, int l, int v, string id){
-	cout << "Client " + id + ": " + c.passwortKnacken(l,v) << endl;
+void startClient(myTCPclient* c, int l, int v, string id){
+	cout << "Client " + id + ": " + c->passwortKnacken(l,v) << endl;
 	goOn_++;
 }
 
@@ -82,8 +82,8 @@ int main(){
 	v = std::stoi(befehl);
 	
 	for(int i = 0; i< t; i++){
-	std::thread client(startClient, clients[i], l, v, to_string(i));
-	client.detach();
+		std::thread client(startClient, &clients.at(i), l, v, to_string(i));
+		client.detach();
 	}
 	cout<< endl << "Threads gestartet!" << endl;
 	
@@ -92,10 +92,13 @@ int main(){
 	}
 	
 	int gesamtCount = 0;
+	int gesamtZeit = 0;
 	for(int i = 0; i< t; i++){
 		gesamtCount = gesamtCount + clients[i].getCount();
+		gesamtZeit = gesamtZeit + clients[i].getTimeCount();
 	}
 	cout << "Durchschnittlich " << gesamtCount/t << " Versuche!" << endl;
+	cout << "Durchschnittlich " << gesamtZeit/t << " ms!" << endl;
 	cout << "Fertig?(j/n)"<<endl;
 	string input;
 	cin >> input;

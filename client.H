@@ -26,8 +26,10 @@ public:
 	string passwortKnacken(int l, int v);
 	string sendMsg(string msg, bool aus);
 	int getCount();
+	int getTimeCount();
 protected:
 	int count_;
+	int timeCount_;
 	string gefundenesPw_;
 	bool pw(string pwd, int l, int v);
 };
