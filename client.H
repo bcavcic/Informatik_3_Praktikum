@@ -23,7 +23,7 @@
 class myTCPclient : public TCPclient{
 public:
 	myTCPclient(string host, int port);
-	string passwortKnacken(int l, int v);
+	string passwortKnacken(int l, int v);//startet Prozess des Passwortknacken und misst benoetigte Zeit
 	string sendMsg(string msg, bool aus); //Senden der Nachricht
 	int getCount(); // Ermittlung der Anzahl der Versuche
 	int getTimeCount();  // Ermittlung der benoetigten Zeit
@@ -31,7 +31,7 @@ protected:
 	int count_;
 	int timeCount_;
 	string gefundenesPw_;
-	bool pw(string pwd, int l, int v);
+	bool pw(string pwd, int l, int v); //prueft ob Passwort richtig erraten wurde, misst benoetigte Versuche
 };
 
 
