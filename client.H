@@ -24,9 +24,9 @@ class myTCPclient : public TCPclient{
 public:
 	myTCPclient(string host, int port);
 	string passwortKnacken(int l, int v);
-	string sendMsg(string msg, bool aus);
-	int getCount();
-	int getTimeCount();
+	string sendMsg(string msg, bool aus); //Senden der Nachricht
+	int getCount(); // Ermittlung der Anzahl der Versuche
+	int getTimeCount();  // Ermittlung der benoetigten Zeit
 protected:
 	int count_;
 	int timeCount_;

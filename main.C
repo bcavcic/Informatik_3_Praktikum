@@ -43,9 +43,13 @@ void startClient(myTCPclient* c, int l, int v, string id){
 	cout << "Client " + id + ": " + c->passwortKnacken(l,v) << endl;
 	goOn_++;
 }
-
+/**
+ * Bestimmt zufaellige Ports, ermittelt die eingegebene Anzahl der Threads, Passwortlaenge, Zeichenvielfalt, mithilfe
+ * von CIN oder Kommandozeilenparametern.
+ * Erstellt Clients, startet Threads mit den Funktionen startServer, startClient
+ */
 int main(int argc, char *argv[]){
-	int portbase = time(0)%2000+1000;
+	int portbase = time(0)%2000+1000; //zufaellige Bestimmung der Ports
 	int l;
 	int v;
 	int t;
